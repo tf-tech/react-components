@@ -8,7 +8,7 @@ export {
 export type {EditorFieldType, EditorField, ChangeListener} from './components';
 export {FetchError} from './components';
 
-export type {Configuration} from './components';
+export type {Configuration, Icons} from './components';
 export { buildIconsFromIconSet } from './components';
 
 export {ConfigurationProvider, ConfigurationContext, useConfiguration} from './components';
