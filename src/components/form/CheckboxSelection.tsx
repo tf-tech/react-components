@@ -1,7 +1,8 @@
+import React from "react";
 import {UseQuery} from "@/lib/model/QueryTypes";
 import {useEffect, useState} from "react";
 import {Checkbox} from "primereact/checkbox";
-import styles from './object-editor.module.scss';
+import './object-editor.scss';
 
 interface CheckboxSelectionOption {
     id: string
@@ -33,7 +34,7 @@ export default function CheckboxSelection(props: CheckboxSelectionProps) {
     }
 
     return <>
-        {opts?.map(o => <div className={styles.checkbox} key={o.id}>
+        {opts?.map(o => <div className={'checkbox'} key={o.id}>
             <Checkbox checked={props.value.indexOf(o.id) > -1} value={o} id={`chk-${o}`} onChange={(e) => changeSelection(e.target.checked, o)}/>
             <label htmlFor={`chk-${o.id}`}>{o.name}</label>
         </div>)}

@@ -1,9 +1,8 @@
-'use client';
-
 import {Card} from "primereact/card";
 import React, {MutableRefObject, useEffect, useState} from "react";
-import styles from './object-editor.module.scss';
-import {Form,FormSkeleton } from "@/components/form";
+import './object-editor.scss';
+import Form from "@/components/form/Form";
+import FormSkeleton from "@/components/form/FormSkeleton"
 import {FetchError} from "@/components/error";
 import {useNotification} from "@/components/notification";
 import {useTranslations} from "next-intl";
@@ -144,7 +143,7 @@ export default function ObjectEditor(props: ObjectEditorProps<any>) {
         return <Form object={object} rows={rows} onChange={(changed) => onFormChanged(changed)} onSave={() => save()} />
     }
 
-    return <Card className={styles.pageWrapper}>
+    return <Card className={'pageWrapper'}>
         {isLoading || object == null && !isError ? <FormSkeleton rows={rows} /> : isError ? <FetchError error={error} /> : renderForm()}
     </Card>
 }

@@ -1,5 +1,4 @@
-'use client';
-
+import React from "react";
 import {ReactNode, useEffect, useRef, useState} from "react";
 import {NotificationContext} from "./context";
 import {Toast} from "primereact/toast";

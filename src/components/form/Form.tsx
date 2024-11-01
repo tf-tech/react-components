@@ -5,10 +5,10 @@ import {Editor} from "primereact/editor";
 import {Calendar} from "primereact/calendar";
 import {DateTime} from "luxon";
 import React, {FormEvent} from "react";
-import styles from "@/lib/form/object-editor.module.scss";
+import "./object-editor.scss";
 import {classNames} from "primereact/utils";
 import {useTranslations} from "next-intl";
-import {CheckboxSelection} from "@/components/form";
+import CheckboxSelection from "@/components/form/CheckboxSelection";
 import {ChangeListener, EditorField} from "@/components/form/FormTypes";
 
 interface FormProps<TObject> {
@@ -60,7 +60,7 @@ function renderDateTimeSelector(field: EditorField, obj: any, onChange: ChangeLi
 }
 
 function renderCheckSelection(field: EditorField, obj: any, onChange: ChangeListener) {
-    return <div className={styles.formWrapRow}>
+    return <div className={'formWrapRow'}>
         <CheckboxSelection value={obj[field.key]} onChange={(e) => onChange({[field.key]: e})} options={field.options!} />
     </div>
 }
@@ -92,14 +92,14 @@ export default function Form(props: FormProps<any>) {
     const t = useTranslations();
 
     function renderField(field: EditorField, obj: any, onChange: ChangeListener) {
-        return <div className={classNames(styles.formField, styles[`size-${field.size ?? 12}`])} key={field.key}>
+        return <div className={classNames('formField', `size-${field.size ?? 12}`)} key={field.key}>
             <label htmlFor={field.key}>{t(field.labelTranslationKey)}</label>
             {renderInputField(field, obj, onChange)}
         </div>
     }
 
     function renderRow(row: EditorField[]) {
-        return <div className={styles.formRow} key={row.map(f => f.key).join(",")}>
+        return <div className={'formRow'} key={row.map(f => f.key).join(",")}>
             {row.map(f => renderField(f, props.object, (e) => props.onChange(e)))}
         </div>
     }
@@ -110,7 +110,7 @@ export default function Form(props: FormProps<any>) {
     }
 
     return <form onSubmit={(e) => onSubmit(e)}>
-        <div className={styles.formColumn}>
+        <div className={'formColumn'}>
             {props.rows.map(r => renderRow(r))}
         </div>
     </form>

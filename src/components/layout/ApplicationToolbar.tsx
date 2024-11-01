@@ -1,12 +1,11 @@
-'use client';
-
+import React from "react";
 import {Toolbar} from "primereact/toolbar";
-import styles from './application-toolbar.module.scss'
+import './application-toolbar.scss'
 import {ReactNode} from "react";
 import {Button} from "primereact/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useRouter} from "next/navigation";
-import {useConfiguration} from "@/components";
+import {useConfiguration} from "@/components/configuration";
 
 interface ApplicationToolbarParams {
     title: string | ReactNode,
@@ -28,6 +27,6 @@ export default function ApplicationToolbar({title, children, backRoute, ...rest}
     </>
 
     return <>
-        <Toolbar className={styles.applicationToolbar} center={centerContent} end={children} start={startContent} {...rest} />
+        <Toolbar className={'applicationToolbar'} center={centerContent} end={children} start={startContent} {...rest} />
     </>;
 }

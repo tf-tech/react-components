@@ -1,4 +1,4 @@
-'use client';
+import React from "react";
 import {DataTable as PRDataTable, DataTableFilterMeta} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {useState} from "react";
@@ -12,8 +12,8 @@ import {Button} from "primereact/button";
 import {useTranslations} from "next-intl";
 import {confirmDialog} from "primereact/confirmdialog";
 import {Skeleton} from "primereact/skeleton";
-import {useNotification} from "@/components";
-import styles from "./data-table.module.scss";
+import {useNotification} from "@/components/notification";
+import "./data-table.scss";
 import {useConfiguration} from "@/components/configuration";
 import {MutationQuery, UseQuery} from "@/lib/model/QueryTypes";
 
@@ -72,7 +72,7 @@ export default function DataTable(props: DataTableProps<any>) {
 
     const renderHeader = () => {
         return (
-            <div className={styles.filterRow}>
+            <div className={'filterRow'}>
                 <IconField iconPosition="left">
                     <InputIcon>
                         <FontAwesomeIcon icon={configuration.iconSet.faSearch} height={"1em"} width={"1em"}/>
@@ -136,7 +136,7 @@ export default function DataTable(props: DataTableProps<any>) {
     };
 
     return <>
-        {isLoading || isFetching ? <div className={styles.pageLoading}><Skeleton/></div> :
+        {isLoading || isFetching ? <div className={'pageLoading'}><Skeleton/></div> :
             <PRDataTable value={data} scrollable={true} paginator={true} rowsPerPageOptions={[10, 20, 50, 100]}
                          rows={10}
                          globalFilterFields={['id', 'name']} filters={filters} onFilter={(f) => setFilters(f.filters)}
@@ -144,7 +144,7 @@ export default function DataTable(props: DataTableProps<any>) {
                          header={renderHeader()} data-test={props.dataTest}>
                 <Column field="id" header={t('general.id')} style={{maxWidth: '10em'}}/>
                 {props.columns.map(c => <Column key={c.key} field={c.key} header={t(c.translationKey)}/>)}
-                <Column body={actionBodyTemplate} exportable={false} className={styles.actionColumn}></Column>
+                <Column body={actionBodyTemplate} exportable={false} className={'actionColumn'}></Column>
             </PRDataTable>}
     </>
 }

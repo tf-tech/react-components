@@ -1,11 +1,10 @@
-'use client';
-
+import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Button, ButtonProps} from "primereact/button";
 import {useRouter} from "next/navigation";
 import {IconProp} from "@fortawesome/fontawesome-svg-core";
 
-interface LinkButtonProps extends ButtonProps {
+export interface LinkButtonProps extends ButtonProps {
     severity?: 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'help' | 'contrast'
     faIcon?: IconProp,
     route: string

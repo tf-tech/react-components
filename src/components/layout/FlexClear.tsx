@@ -1,5 +1,6 @@
-import styles from './flex-clear.module.scss';
+import React from "react";
+import './flex-clear.scss';
 
 export default function FlexClear() {
-    return <span className={styles.flexClear}></span>
+    return <span className={'flexClear'}></span>
 }
