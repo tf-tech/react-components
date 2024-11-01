@@ -8,7 +8,7 @@ import scss from "rollup-plugin-scss";
 export default [
     {
         input: "src/index.ts",
-        external: [...Object.keys(packageJson.peerDependencies || {}), 'next/navigation', 'next', 'prop-types'],
+        external: [...Object.keys(packageJson.peerDependencies || {}), /^next/, 'prop-types', 'react-dom', /^primereact/, 'tslib'],
         output: [
             {
                 file: packageJson.module,
