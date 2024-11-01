@@ -148,6 +148,7 @@ interface Icons {
 interface Configuration {
     iconSet: Icons;
 }
+declare function buildIconsFromIconSet(iconSet: Icons): Icons;
 
 declare function ConfigurationProvider({ children, configuration }: {
     children?: ReactNode | ReactNode[];
@@ -166,4 +167,4 @@ declare function ApplicationToolbar({ title, children, backRoute, ...rest }: App
 
 declare function FlexClear(): React__default.JSX.Element;
 
-export { ApplicationToolbar, type ChangeListener, CheckboxSelection, type CheckboxSelectionOption, type CheckboxSelectionProps, type ColumnDefinition, type Configuration, ConfigurationContext, ConfigurationProvider, DataTable, type DataTableProps, type EditorField, type EditorFieldType, FetchError, FlexClear, Form, FormSkeleton, type LastQueryInfo, type LazyUseQuery, LinkButton, type LinkButtonProps, type MutationQuery, type MutationQueryResult, type MutationQueryTrigger, Notification, NotificationContext, ObjectEditor, type QueryTrigger, type UseQuery, type UseQueryDefinition, type UseQueryResult, useConfiguration, useNotification };
+export { ApplicationToolbar, type ChangeListener, CheckboxSelection, type CheckboxSelectionOption, type CheckboxSelectionProps, type ColumnDefinition, type Configuration, ConfigurationContext, ConfigurationProvider, DataTable, type DataTableProps, type EditorField, type EditorFieldType, FetchError, FlexClear, Form, FormSkeleton, type LastQueryInfo, type LazyUseQuery, LinkButton, type LinkButtonProps, type MutationQuery, type MutationQueryResult, type MutationQueryTrigger, Notification, NotificationContext, ObjectEditor, type QueryTrigger, type UseQuery, type UseQueryDefinition, type UseQueryResult, buildIconsFromIconSet, useConfiguration, useNotification };

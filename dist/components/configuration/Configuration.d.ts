@@ -9,3 +9,4 @@ export interface Icons {
 export interface Configuration {
     iconSet: Icons;
 }
+export declare function buildIconsFromIconSet(iconSet: Icons): Icons;

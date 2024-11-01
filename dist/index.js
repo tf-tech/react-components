@@ -57,6 +57,16 @@ function Notification(_a) {
         React.createElement(NotificationContext.Provider, { value: val }, children));
 }
 
+function buildIconsFromIconSet(iconSet) {
+    return {
+        faArrowLeft: iconSet.faArrowLeft,
+        faEye: iconSet.faEye,
+        faSearch: iconSet.faSearch,
+        faTrash: iconSet.faTrash,
+        faXmark: iconSet.faXmark,
+    };
+}
+
 var DefaultConfigurationContext = createContext(null);
 function createUseConfigurationHook(context) {
     if (context === void 0) { context = DefaultConfigurationContext; }
@@ -485,5 +495,5 @@ function FlexClear() {
     return React.createElement("span", { className: 'flexClear' });
 }
 
-export { ApplicationToolbar, CheckboxSelection, ConfigurationContext, ConfigurationProvider, DataTable, FetchError, FlexClear, Form, FormSkeleton, LinkButton, Notification, NotificationContext, ObjectEditor, useConfiguration, useNotification };
+export { ApplicationToolbar, CheckboxSelection, ConfigurationContext, ConfigurationProvider, DataTable, FetchError, FlexClear, Form, FormSkeleton, LinkButton, Notification, NotificationContext, ObjectEditor, buildIconsFromIconSet, useConfiguration, useNotification };
 //# sourceMappingURL=index.js.map

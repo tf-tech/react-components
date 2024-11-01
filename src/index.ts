@@ -7,7 +7,10 @@ export {
 } from './components';
 export type {EditorFieldType, EditorField, ChangeListener} from './components';
 export {FetchError} from './components';
+
 export type {Configuration} from './components';
+export { buildIconsFromIconSet } from './components';
+
 export {ConfigurationProvider, ConfigurationContext, useConfiguration} from './components';
 export {ApplicationToolbar, FlexClear} from './components';
 export {LinkButton} from './components'
