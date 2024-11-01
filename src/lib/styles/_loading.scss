@@ -1,0 +1,8 @@
+.pageLoading {
+  background: white;
+  padding: .25rem;
+
+  :global(.p-skeleton) {
+    min-height: 2rem;
+  }
+}
