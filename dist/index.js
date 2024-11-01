@@ -1,3 +1,4 @@
+'use client';
 import { __rest, __assign, __awaiter, __generator, __spreadArray } from 'tslib';
 import React, { createContext, useContext, useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
