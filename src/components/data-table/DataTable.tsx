@@ -1,14 +1,12 @@
 'use client';
 import {DataTable as PRDataTable, DataTableFilterMeta} from "primereact/datatable";
 import {Column} from "primereact/column";
-import {MutationQuery, UseQuery} from "@/lib";
 import {useState} from "react";
 import {FilterMatchMode} from "primereact/api";
 import {useRouter} from "next/navigation";
 import {IconField} from "primereact/iconfield";
 import {InputIcon} from "primereact/inputicon";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-//import {faEye, faSearch, faTrash, faXmark} from "@fortawesome/pro-duotone-svg-icons";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {useTranslations} from "next-intl";
@@ -17,6 +15,7 @@ import {Skeleton} from "primereact/skeleton";
 import {useNotification} from "@/components";
 import styles from "./data-table.module.scss";
 import {useConfiguration} from "@/components/configuration";
+import {MutationQuery, UseQuery} from "@/lib/model/QueryTypes";
 
 export interface ColumnDefinition {
     key: string,

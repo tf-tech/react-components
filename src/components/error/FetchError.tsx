@@ -1,5 +1,11 @@
-import {SerializedError} from "@reduxjs/toolkit";
 import {useTranslations} from "next-intl";
+
+export interface SerializedError {
+    name?: string;
+    message?: string;
+    stack?: string;
+    code?: string;
+}
 
 export default function FetchError({error}: {error: SerializedError | any}) {
     const t = useTranslations();

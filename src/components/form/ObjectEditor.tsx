@@ -3,11 +3,12 @@
 import {Card} from "primereact/card";
 import React, {MutableRefObject, useEffect, useState} from "react";
 import styles from './object-editor.module.scss';
-import {LazyUseQuery, MutationQuery} from "@/lib";
-import {Form,FormSkeleton, EditorField, EditorFieldType} from "@/components/form";
+import {Form,FormSkeleton } from "@/components/form";
 import {FetchError} from "@/components/error";
 import {useNotification} from "@/components/notification";
 import {useTranslations} from "next-intl";
+import {EditorField, EditorFieldType} from "@/components/form/FormTypes";
+import {LazyUseQuery, MutationQuery} from "@/lib/model/QueryTypes";
 
 export interface ObjectEditorRef {
     save(): void

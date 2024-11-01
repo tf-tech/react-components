@@ -1,8 +1,8 @@
 import styles from "@/lib/form/object-editor.module.scss";
 import React from "react";
-import {EditorField} from "@/components/form";
 import {classNames} from "primereact/utils";
 import {Skeleton} from "primereact/skeleton";
+import {EditorField} from "@/components/form/FormTypes";
 
 interface FormSkeletonProps {
     rows: EditorField[][]

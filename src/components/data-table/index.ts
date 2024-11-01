@@ -1,1 +1,1 @@
-export { default as DataTable, DataTableProps, ColumnDefinition } from './DataTable'
+export { default as DataTable } from './DataTable'

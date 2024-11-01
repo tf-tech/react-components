@@ -1,4 +1,3 @@
-import {ChangeListener, EditorField} from "@/components/form";
 import {KeyFilterType} from "primereact/keyfilter";
 import {InputText} from "primereact/inputtext";
 import {Password} from "primereact/password";
@@ -10,6 +9,7 @@ import styles from "@/lib/form/object-editor.module.scss";
 import {classNames} from "primereact/utils";
 import {useTranslations} from "next-intl";
 import {CheckboxSelection} from "@/components/form";
+import {ChangeListener, EditorField} from "@/components/form/FormTypes";
 
 interface FormProps<TObject> {
     object: TObject
