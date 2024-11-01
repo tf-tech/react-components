@@ -1,4 +1,5 @@
-import { UseQuery } from "@/lib/model/QueryTypes";
+import { UseQuery } from "../../lib";
+import { CheckboxSelectionOption } from "./CheckboxSelection";
 export interface ChangeListener {
     (change: any): void;
 }

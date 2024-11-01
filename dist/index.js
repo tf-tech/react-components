@@ -5,14 +5,7 @@ import ReactDOM from 'react-dom';
 import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 import { useTranslations } from 'next-intl';
-import { useNotification as useNotification$1 } from '@/components/notification';
-import { useConfiguration as useConfiguration$1 } from '@/components/configuration';
 import { DateTime } from 'luxon';
-import CheckboxSelection$1 from '@/components/form/CheckboxSelection';
-import Form$1 from '@/components/form/Form';
-import FormSkeleton$1 from '@/components/form/FormSkeleton';
-import { FetchError as FetchError$1 } from '@/components/error';
-import { ConfigurationContext as ConfigurationContext$1 } from '@/components/configuration/context';
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -23542,9 +23535,26 @@ var Skeleton = /*#__PURE__*/React.memo(/*#__PURE__*/React.forwardRef(function (i
 }));
 Skeleton.displayName = 'Skeleton';
 
+var DefaultConfigurationContext = createContext(null);
+function createUseConfigurationHook(context) {
+    if (context === void 0) { context = DefaultConfigurationContext; }
+    return function () {
+        return useContext(context);
+    };
+}
+var ConfigurationContext = DefaultConfigurationContext;
+//
+var useConfiguration = createUseConfigurationHook();
+
+function ConfigurationProvider(_a) {
+    var children = _a.children, configuration = _a.configuration;
+    return React__default.createElement(React__default.Fragment, null,
+        React__default.createElement(ConfigurationContext.Provider, { value: configuration }, children));
+}
+
 function DataTable(props) {
     var _this = this;
-    var configuration = useConfiguration$1();
+    var configuration = useConfiguration();
     var t = useTranslations();
     var _a = props.queryAll(), data = _a.data, isLoading = _a.isLoading, isFetching = _a.isFetching, refetchList = _a.refetch;
     var deleteItemApi = props.deleteItem()[0];
@@ -23553,7 +23563,7 @@ function DataTable(props) {
     }), filters = _b[0], setFilters = _b[1];
     var _c = useState(''), globalFilterValue = _c[0], setGlobalFilterValue = _c[1];
     var router = useRouter();
-    var toast = useNotification$1();
+    var toast = useNotification();
     var initFilters = function () {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode$3.CONTAINS }
@@ -28923,364 +28933,6 @@ var Calendar = /*#__PURE__*/React.memo(/*#__PURE__*/React.forwardRef(function (i
 }));
 Calendar.displayName = 'Calendar';
 
-function renderInputText(id, value, onChange, readonly, keyFilter) {
-    return React__default.createElement(InputText, { id: id, value: value, onChange: function (e) { return onChange(e.target.value); }, keyfilter: keyFilter, "data-test": "txt-".concat(id), disabled: readonly });
-}
-function renderTextField(field, obj, onChange) {
-    var _a;
-    return renderInputText(field.key, obj[field.key], function (val) {
-        var _a;
-        return onChange((_a = {}, _a[field.key] = val, _a));
-    }, !((_a = field.editable) !== null && _a !== void 0 ? _a : true));
-}
-function renderEmailField(field, obj, onChange) {
-    var _a;
-    return renderInputText(field.key, obj[field.key], function (val) {
-        var _a;
-        return onChange((_a = {}, _a[field.key] = val, _a));
-    }, !((_a = field.editable) !== null && _a !== void 0 ? _a : true), 'email');
-}
-function renderNumberField(field, obj, onChange) {
-    var _a;
-    return renderInputText(field.key, obj[field.key], function (val) {
-        var _a;
-        return onChange((_a = {}, _a[field.key] = val, _a));
-    }, !((_a = field.editable) !== null && _a !== void 0 ? _a : true), 'int');
-}
-function renderPassword(field, obj, onChange) {
-    var _a;
-    return React__default.createElement(Password, { toggleMask: true, value: obj[field.key], onChange: function (e) {
-            var _a;
-            return onChange((_a = {}, _a[field.key] = e.target.value, _a));
-        }, id: field.key, "data-test": "pwd-".concat(field.key), readOnly: !((_a = field.editable) !== null && _a !== void 0 ? _a : true) });
-}
-function renderEditor(field, obj, onChange) {
-    var _a;
-    return React__default.createElement(Editor, { value: obj[field.key], onTextChange: function (e) {
-            var _a;
-            return onChange((_a = {}, _a[field.key] = e.htmlValue, _a));
-        }, readOnly: !((_a = field.editable) !== null && _a !== void 0 ? _a : true) });
-}
-function renderCalendar(id, value, onChange, showTime, readonly) {
-    return React__default.createElement(Calendar, { selectionMode: 'single', value: value, onChange: function (e) { return onChange(e.value); }, showTime: showTime, showWeek: true, hourFormat: "24", dateFormat: "dd.mm.yy", "data-test": "dd-".concat(id), disabled: readonly });
-}
-function renderDateSelector(field, obj, onChange) {
-    var _a;
-    return renderCalendar(field.key, DateTime.fromISO(obj[field.key]).toJSDate(), function (e) {
-        var _a;
-        return onChange((_a = {}, _a[field.key] = DateTime.fromJSDate(e).toString(), _a));
-    }, false, !((_a = field.editable) !== null && _a !== void 0 ? _a : true));
-}
-function renderDateTimeSelector(field, obj, onChange) {
-    var _a;
-    return renderCalendar(field.key, DateTime.fromISO(obj[field.key]).toJSDate(), function (e) {
-        var _a;
-        return onChange((_a = {}, _a[field.key] = DateTime.fromJSDate(e).toString(), _a));
-    }, true, !((_a = field.editable) !== null && _a !== void 0 ? _a : true));
-}
-function renderCheckSelection(field, obj, onChange) {
-    return React__default.createElement("div", { className: 'formWrapRow' },
-        React__default.createElement(CheckboxSelection$1, { value: obj[field.key], onChange: function (e) {
-                var _a;
-                return onChange((_a = {}, _a[field.key] = e, _a));
-            }, options: field.options }));
-}
-function renderInputField(field, obj, onChange) {
-    switch (field.type) {
-        case 'text':
-            return renderTextField(field, obj, onChange);
-        case 'editor':
-            return renderEditor(field, obj, onChange);
-        case 'email':
-            return renderEmailField(field, obj, onChange);
-        case 'date':
-            return renderDateSelector(field, obj, onChange);
-        case 'datetime':
-            return renderDateTimeSelector(field, obj, onChange);
-        case 'number':
-            return renderNumberField(field, obj, onChange);
-        case 'password':
-            return renderPassword(field, obj, onChange);
-        case 'option':
-            return null;
-        case 'selection-check':
-            return renderCheckSelection(field, obj, onChange);
-    }
-}
-function Form(props) {
-    var t = useTranslations();
-    function renderField(field, obj, onChange) {
-        var _a;
-        return React__default.createElement("div", { className: classNames('formField', "size-".concat((_a = field.size) !== null && _a !== void 0 ? _a : 12)), key: field.key },
-            React__default.createElement("label", { htmlFor: field.key }, t(field.labelTranslationKey)),
-            renderInputField(field, obj, onChange));
-    }
-    function renderRow(row) {
-        return React__default.createElement("div", { className: 'formRow', key: row.map(function (f) { return f.key; }).join(",") }, row.map(function (f) { return renderField(f, props.object, function (e) { return props.onChange(e); }); }));
-    }
-    function onSubmit(e) {
-        e.preventDefault();
-        props.onSave();
-    }
-    return React__default.createElement("form", { onSubmit: function (e) { return onSubmit(e); } },
-        React__default.createElement("div", { className: 'formColumn' }, props.rows.map(function (r) { return renderRow(r); })));
-}
-
-function FormSkeleton(props) {
-    function renderSkeletonField(field) {
-        var _a;
-        return React__default.createElement("div", { className: classNames('formField', "size-".concat((_a = field.size) !== null && _a !== void 0 ? _a : 12)), key: field.key },
-            React__default.createElement(Skeleton, { width: "25%" }),
-            React__default.createElement(Skeleton, { width: "100%" }));
-    }
-    function renderSkeletonRow(row) {
-        return React__default.createElement("div", { className: 'formRow', key: row.map(function (m) { return m.key; }).join(",") }, row.map(function (r) { return renderSkeletonField(r); }));
-    }
-    function renderSkeleton(rows) {
-        return React__default.createElement("div", { className: 'formColumn' }, rows.map(function (r) { return renderSkeletonRow(r); }));
-    }
-    return renderSkeleton(props.rows);
-}
-
-var classes$1 = {
-  root: 'p-card p-component',
-  header: 'p-card-header',
-  title: 'p-card-title',
-  subTitle: 'p-card-subtitle',
-  content: 'p-card-content',
-  footer: 'p-card-footer',
-  body: 'p-card-body'
-};
-var styles = "\n@layer primereact {\n    .p-card-header img {\n        width: 100%;\n    }\n}\n";
-var CardBase = ComponentBase.extend({
-  defaultProps: {
-    __TYPE: 'Card',
-    id: null,
-    header: null,
-    footer: null,
-    title: null,
-    subTitle: null,
-    style: null,
-    className: null,
-    children: undefined
-  },
-  css: {
-    classes: classes$1,
-    styles: styles
-  }
-});
-
-var Card = /*#__PURE__*/React.forwardRef(function (inProps, ref) {
-  var mergeProps = useMergeProps();
-  var context = React.useContext(PrimeReactContext);
-  var props = CardBase.getProps(inProps, context);
-  var elementRef = React.useRef(ref);
-  var _CardBase$setMetaData = CardBase.setMetaData({
-      props: props
-    }),
-    ptm = _CardBase$setMetaData.ptm,
-    cx = _CardBase$setMetaData.cx,
-    isUnstyled = _CardBase$setMetaData.isUnstyled;
-  useHandleStyle(CardBase.css.styles, isUnstyled, {
-    name: 'card'
-  });
-  var createHeader = function createHeader() {
-    var headerProps = mergeProps({
-      className: cx('header')
-    }, ptm('header'));
-    if (props.header) {
-      return /*#__PURE__*/React.createElement("div", headerProps, ObjectUtils.getJSXElement(props.header, props));
-    }
-    return null;
-  };
-  var createBody = function createBody() {
-    var titleProps = mergeProps({
-      className: cx('title')
-    }, ptm('title'));
-    var title = props.title && /*#__PURE__*/React.createElement("div", titleProps, ObjectUtils.getJSXElement(props.title, props));
-    var subTitleProps = mergeProps({
-      className: cx('subTitle')
-    }, ptm('subTitle'));
-    var subTitle = props.subTitle && /*#__PURE__*/React.createElement("div", subTitleProps, ObjectUtils.getJSXElement(props.subTitle, props));
-    var contentProps = mergeProps({
-      className: cx('content')
-    }, ptm('content'));
-    var children = props.children && /*#__PURE__*/React.createElement("div", contentProps, props.children);
-    var footerProps = mergeProps({
-      className: cx('footer')
-    }, ptm('footer'));
-    var footer = props.footer && /*#__PURE__*/React.createElement("div", footerProps, ObjectUtils.getJSXElement(props.footer, props));
-    var bodyProps = mergeProps({
-      className: cx('body')
-    }, ptm('body'));
-    return /*#__PURE__*/React.createElement("div", bodyProps, title, subTitle, children, footer);
-  };
-  React.useEffect(function () {
-    ObjectUtils.combinedRefs(elementRef, ref);
-  }, [elementRef, ref]);
-  var rootProps = mergeProps({
-    id: props.id,
-    ref: elementRef,
-    style: props.style,
-    className: classNames(props.className, cx('root'))
-  }, CardBase.getOtherProps(props), ptm('root'));
-  var header = createHeader();
-  var body = createBody();
-  return /*#__PURE__*/React.createElement("div", rootProps, header, body);
-});
-Card.displayName = 'Card';
-
-function clusterFields(fields) {
-    var _a;
-    var rows = [];
-    var currentRow = [];
-    var currentSizes = 0;
-    for (var i = 0; i < fields.length; i++) {
-        var field = fields[i];
-        var size = (_a = field.size) !== null && _a !== void 0 ? _a : 12;
-        if (currentSizes + size > 12) {
-            rows.push(currentRow);
-            currentRow = [];
-            currentSizes = 0;
-        }
-        currentRow.push(field);
-        currentSizes += size;
-    }
-    if (currentSizes > 0) {
-        rows.push(currentRow);
-    }
-    return rows;
-}
-function generateDefaultValue(type) {
-    switch (type) {
-        case 'email':
-        case 'password':
-        case 'editor':
-        case 'text': return "";
-        case 'number': return 0;
-        case 'date':
-        case 'datetime': return new Date();
-        case 'selection-check': return [];
-    }
-}
-function ObjectEditor(props) {
-    var _a = props.useLazyGetObject(), getObjectQuery = _a[0], _b = _a[1], apiObject = _b.data, isLoading = _b.isLoading, isError = _b.isError, error = _b.error;
-    var updateObjectQuery = props.useUpdateObject()[0];
-    var createObjectQuery = props.useCreateObject()[0];
-    var _c = useState(null), object = _c[0], setObject = _c[1];
-    var t = useTranslations();
-    var toast = useNotification$1();
-    var rows = clusterFields(props.fields);
-    useEffect(function () {
-        if (apiObject != null)
-            setObject(apiObject);
-    }, [isLoading, apiObject]);
-    useEffect(function () {
-        if (props.id != null && props.id != "null") {
-            getObjectQuery(props.id);
-        }
-        else {
-            setObject(createNewObject());
-        }
-    }, [props.id, getObjectQuery]);
-    useEffect(function () {
-        if (props.objectEditorRef != null)
-            props.objectEditorRef.current = { save: save };
-    });
-    function handleUpdateResponse(result) {
-        return __awaiter(this, void 0, void 0, function () {
-            var id, reload;
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        if (result.error != null) {
-                            toast.show({ severity: 'error', summary: t(props.saveErrorTranslationKey, object) });
-                        }
-                        else {
-                            toast.show({ severity: 'success', summary: t(props.saveSuccessTranslationKey, object) });
-                        }
-                        id = ((_a = result.data) === null || _a === void 0 ? void 0 : _a.id) || props.id;
-                        if (!(id != null && id != "null")) return [3 /*break*/, 2];
-                        return [4 /*yield*/, getObjectQuery(id)];
-                    case 1:
-                        reload = _b.sent();
-                        setObject(reload.data);
-                        props.onSaved(reload.data);
-                        _b.label = 2;
-                    case 2: return [2 /*return*/];
-                }
-            });
-        });
-    }
-    function createNewObject() {
-        var result = {};
-        for (var _i = 0, _a = props.fields; _i < _a.length; _i++) {
-            var field = _a[_i];
-            result[field.key] = generateDefaultValue(field.type);
-        }
-        return result;
-    }
-    function asyncUpdateObject() {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, updateObjectQuery(object)];
-                    case 1:
-                        result = _a.sent();
-                        return [4 /*yield*/, handleUpdateResponse(result)];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    }
-    function asyncCreateObject() {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, createObjectQuery(object)];
-                    case 1:
-                        result = _a.sent();
-                        return [4 /*yield*/, handleUpdateResponse(result)];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    }
-    function save() {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(props.id != null && props.id != "null")) return [3 /*break*/, 2];
-                        return [4 /*yield*/, asyncUpdateObject()];
-                    case 1:
-                        _a.sent();
-                        return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, asyncCreateObject()];
-                    case 3:
-                        _a.sent();
-                        _a.label = 4;
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    }
-    function onFormChanged(changed) {
-        setObject(__assign(__assign({}, object), changed));
-    }
-    function renderForm() {
-        return React__default.createElement(Form$1, { object: object, rows: rows, onChange: function (changed) { return onFormChanged(changed); }, onSave: function () { return save(); } });
-    }
-    return React__default.createElement(Card, { className: 'pageWrapper' }, isLoading || object == null && !isError ? React__default.createElement(FormSkeleton$1, { rows: rows }) : isError ? React__default.createElement(FetchError$1, { error: error }) : renderForm());
-}
-
 function _extends() {
   _extends = Object.assign ? Object.assign.bind() : function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -29389,7 +29041,7 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
 
-var classes = {
+var classes$1 = {
   box: 'p-checkbox-box',
   input: 'p-checkbox-input',
   icon: 'p-checkbox-icon',
@@ -29434,7 +29086,7 @@ var CheckboxBase = ComponentBase.extend({
     children: undefined
   },
   css: {
-    classes: classes
+    classes: classes$1
   }
 });
 
@@ -29630,6 +29282,213 @@ function CheckboxSelection(props) {
         React__default.createElement("label", { htmlFor: "chk-".concat(o.id) }, o.name)); }));
 }
 
+function renderInputText(id, value, onChange, readonly, keyFilter) {
+    return React__default.createElement(InputText, { id: id, value: value, onChange: function (e) { return onChange(e.target.value); }, keyfilter: keyFilter, "data-test": "txt-".concat(id), disabled: readonly });
+}
+function renderTextField(field, obj, onChange) {
+    var _a;
+    return renderInputText(field.key, obj[field.key], function (val) {
+        var _a;
+        return onChange((_a = {}, _a[field.key] = val, _a));
+    }, !((_a = field.editable) !== null && _a !== void 0 ? _a : true));
+}
+function renderEmailField(field, obj, onChange) {
+    var _a;
+    return renderInputText(field.key, obj[field.key], function (val) {
+        var _a;
+        return onChange((_a = {}, _a[field.key] = val, _a));
+    }, !((_a = field.editable) !== null && _a !== void 0 ? _a : true), 'email');
+}
+function renderNumberField(field, obj, onChange) {
+    var _a;
+    return renderInputText(field.key, obj[field.key], function (val) {
+        var _a;
+        return onChange((_a = {}, _a[field.key] = val, _a));
+    }, !((_a = field.editable) !== null && _a !== void 0 ? _a : true), 'int');
+}
+function renderPassword(field, obj, onChange) {
+    var _a;
+    return React__default.createElement(Password, { toggleMask: true, value: obj[field.key], onChange: function (e) {
+            var _a;
+            return onChange((_a = {}, _a[field.key] = e.target.value, _a));
+        }, id: field.key, "data-test": "pwd-".concat(field.key), readOnly: !((_a = field.editable) !== null && _a !== void 0 ? _a : true) });
+}
+function renderEditor(field, obj, onChange) {
+    var _a;
+    return React__default.createElement(Editor, { value: obj[field.key], onTextChange: function (e) {
+            var _a;
+            return onChange((_a = {}, _a[field.key] = e.htmlValue, _a));
+        }, readOnly: !((_a = field.editable) !== null && _a !== void 0 ? _a : true) });
+}
+function renderCalendar(id, value, onChange, showTime, readonly) {
+    return React__default.createElement(Calendar, { selectionMode: 'single', value: value, onChange: function (e) { return onChange(e.value); }, showTime: showTime, showWeek: true, hourFormat: "24", dateFormat: "dd.mm.yy", "data-test": "dd-".concat(id), disabled: readonly });
+}
+function renderDateSelector(field, obj, onChange) {
+    var _a;
+    return renderCalendar(field.key, DateTime.fromISO(obj[field.key]).toJSDate(), function (e) {
+        var _a;
+        return onChange((_a = {}, _a[field.key] = DateTime.fromJSDate(e).toString(), _a));
+    }, false, !((_a = field.editable) !== null && _a !== void 0 ? _a : true));
+}
+function renderDateTimeSelector(field, obj, onChange) {
+    var _a;
+    return renderCalendar(field.key, DateTime.fromISO(obj[field.key]).toJSDate(), function (e) {
+        var _a;
+        return onChange((_a = {}, _a[field.key] = DateTime.fromJSDate(e).toString(), _a));
+    }, true, !((_a = field.editable) !== null && _a !== void 0 ? _a : true));
+}
+function renderCheckSelection(field, obj, onChange) {
+    return React__default.createElement("div", { className: 'formWrapRow' },
+        React__default.createElement(CheckboxSelection, { value: obj[field.key], onChange: function (e) {
+                var _a;
+                return onChange((_a = {}, _a[field.key] = e, _a));
+            }, options: field.options }));
+}
+function renderInputField(field, obj, onChange) {
+    switch (field.type) {
+        case 'text':
+            return renderTextField(field, obj, onChange);
+        case 'editor':
+            return renderEditor(field, obj, onChange);
+        case 'email':
+            return renderEmailField(field, obj, onChange);
+        case 'date':
+            return renderDateSelector(field, obj, onChange);
+        case 'datetime':
+            return renderDateTimeSelector(field, obj, onChange);
+        case 'number':
+            return renderNumberField(field, obj, onChange);
+        case 'password':
+            return renderPassword(field, obj, onChange);
+        case 'option':
+            return null;
+        case 'selection-check':
+            return renderCheckSelection(field, obj, onChange);
+    }
+}
+function Form(props) {
+    var t = useTranslations();
+    function renderField(field, obj, onChange) {
+        var _a;
+        return React__default.createElement("div", { className: classNames('formField', "size-".concat((_a = field.size) !== null && _a !== void 0 ? _a : 12)), key: field.key },
+            React__default.createElement("label", { htmlFor: field.key }, t(field.labelTranslationKey)),
+            renderInputField(field, obj, onChange));
+    }
+    function renderRow(row) {
+        return React__default.createElement("div", { className: 'formRow', key: row.map(function (f) { return f.key; }).join(",") }, row.map(function (f) { return renderField(f, props.object, function (e) { return props.onChange(e); }); }));
+    }
+    function onSubmit(e) {
+        e.preventDefault();
+        props.onSave();
+    }
+    return React__default.createElement("form", { onSubmit: function (e) { return onSubmit(e); } },
+        React__default.createElement("div", { className: 'formColumn' }, props.rows.map(function (r) { return renderRow(r); })));
+}
+
+function FormSkeleton(props) {
+    function renderSkeletonField(field) {
+        var _a;
+        return React__default.createElement("div", { className: classNames('formField', "size-".concat((_a = field.size) !== null && _a !== void 0 ? _a : 12)), key: field.key },
+            React__default.createElement(Skeleton, { width: "25%" }),
+            React__default.createElement(Skeleton, { width: "100%" }));
+    }
+    function renderSkeletonRow(row) {
+        return React__default.createElement("div", { className: 'formRow', key: row.map(function (m) { return m.key; }).join(",") }, row.map(function (r) { return renderSkeletonField(r); }));
+    }
+    function renderSkeleton(rows) {
+        return React__default.createElement("div", { className: 'formColumn' }, rows.map(function (r) { return renderSkeletonRow(r); }));
+    }
+    return renderSkeleton(props.rows);
+}
+
+var classes = {
+  root: 'p-card p-component',
+  header: 'p-card-header',
+  title: 'p-card-title',
+  subTitle: 'p-card-subtitle',
+  content: 'p-card-content',
+  footer: 'p-card-footer',
+  body: 'p-card-body'
+};
+var styles = "\n@layer primereact {\n    .p-card-header img {\n        width: 100%;\n    }\n}\n";
+var CardBase = ComponentBase.extend({
+  defaultProps: {
+    __TYPE: 'Card',
+    id: null,
+    header: null,
+    footer: null,
+    title: null,
+    subTitle: null,
+    style: null,
+    className: null,
+    children: undefined
+  },
+  css: {
+    classes: classes,
+    styles: styles
+  }
+});
+
+var Card = /*#__PURE__*/React.forwardRef(function (inProps, ref) {
+  var mergeProps = useMergeProps();
+  var context = React.useContext(PrimeReactContext);
+  var props = CardBase.getProps(inProps, context);
+  var elementRef = React.useRef(ref);
+  var _CardBase$setMetaData = CardBase.setMetaData({
+      props: props
+    }),
+    ptm = _CardBase$setMetaData.ptm,
+    cx = _CardBase$setMetaData.cx,
+    isUnstyled = _CardBase$setMetaData.isUnstyled;
+  useHandleStyle(CardBase.css.styles, isUnstyled, {
+    name: 'card'
+  });
+  var createHeader = function createHeader() {
+    var headerProps = mergeProps({
+      className: cx('header')
+    }, ptm('header'));
+    if (props.header) {
+      return /*#__PURE__*/React.createElement("div", headerProps, ObjectUtils.getJSXElement(props.header, props));
+    }
+    return null;
+  };
+  var createBody = function createBody() {
+    var titleProps = mergeProps({
+      className: cx('title')
+    }, ptm('title'));
+    var title = props.title && /*#__PURE__*/React.createElement("div", titleProps, ObjectUtils.getJSXElement(props.title, props));
+    var subTitleProps = mergeProps({
+      className: cx('subTitle')
+    }, ptm('subTitle'));
+    var subTitle = props.subTitle && /*#__PURE__*/React.createElement("div", subTitleProps, ObjectUtils.getJSXElement(props.subTitle, props));
+    var contentProps = mergeProps({
+      className: cx('content')
+    }, ptm('content'));
+    var children = props.children && /*#__PURE__*/React.createElement("div", contentProps, props.children);
+    var footerProps = mergeProps({
+      className: cx('footer')
+    }, ptm('footer'));
+    var footer = props.footer && /*#__PURE__*/React.createElement("div", footerProps, ObjectUtils.getJSXElement(props.footer, props));
+    var bodyProps = mergeProps({
+      className: cx('body')
+    }, ptm('body'));
+    return /*#__PURE__*/React.createElement("div", bodyProps, title, subTitle, children, footer);
+  };
+  React.useEffect(function () {
+    ObjectUtils.combinedRefs(elementRef, ref);
+  }, [elementRef, ref]);
+  var rootProps = mergeProps({
+    id: props.id,
+    ref: elementRef,
+    style: props.style,
+    className: classNames(props.className, cx('root'))
+  }, CardBase.getOtherProps(props), ptm('root'));
+  var header = createHeader();
+  var body = createBody();
+  return /*#__PURE__*/React.createElement("div", rootProps, header, body);
+});
+Card.displayName = 'Card';
+
 function FetchError(_a) {
     var error = _a.error;
     var t = useTranslations();
@@ -29644,22 +29503,156 @@ function FetchError(_a) {
         React__default.createElement("span", null, t('general.errors.retry')));
 }
 
-function ConfigurationProvider(_a) {
-    var children = _a.children, configuration = _a.configuration;
-    return React__default.createElement(React__default.Fragment, null,
-        React__default.createElement(ConfigurationContext$1.Provider, { value: configuration }, children));
+function clusterFields(fields) {
+    var _a;
+    var rows = [];
+    var currentRow = [];
+    var currentSizes = 0;
+    for (var i = 0; i < fields.length; i++) {
+        var field = fields[i];
+        var size = (_a = field.size) !== null && _a !== void 0 ? _a : 12;
+        if (currentSizes + size > 12) {
+            rows.push(currentRow);
+            currentRow = [];
+            currentSizes = 0;
+        }
+        currentRow.push(field);
+        currentSizes += size;
+    }
+    if (currentSizes > 0) {
+        rows.push(currentRow);
+    }
+    return rows;
 }
-
-var DefaultConfigurationContext = createContext(null);
-function createUseConfigurationHook(context) {
-    if (context === void 0) { context = DefaultConfigurationContext; }
-    return function () {
-        return useContext(context);
-    };
+function generateDefaultValue(type) {
+    switch (type) {
+        case 'email':
+        case 'password':
+        case 'editor':
+        case 'text': return "";
+        case 'number': return 0;
+        case 'date':
+        case 'datetime': return new Date();
+        case 'selection-check': return [];
+    }
 }
-var ConfigurationContext = DefaultConfigurationContext;
-//
-var useConfiguration = createUseConfigurationHook();
+function ObjectEditor(props) {
+    var _a = props.useLazyGetObject(), getObjectQuery = _a[0], _b = _a[1], apiObject = _b.data, isLoading = _b.isLoading, isError = _b.isError, error = _b.error;
+    var updateObjectQuery = props.useUpdateObject()[0];
+    var createObjectQuery = props.useCreateObject()[0];
+    var _c = useState(null), object = _c[0], setObject = _c[1];
+    var t = useTranslations();
+    var toast = useNotification();
+    var rows = clusterFields(props.fields);
+    useEffect(function () {
+        if (apiObject != null)
+            setObject(apiObject);
+    }, [isLoading, apiObject]);
+    useEffect(function () {
+        if (props.id != null && props.id != "null") {
+            getObjectQuery(props.id);
+        }
+        else {
+            setObject(createNewObject());
+        }
+    }, [props.id, getObjectQuery]);
+    useEffect(function () {
+        if (props.objectEditorRef != null)
+            props.objectEditorRef.current = { save: save };
+    });
+    function handleUpdateResponse(result) {
+        return __awaiter(this, void 0, void 0, function () {
+            var id, reload;
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (result.error != null) {
+                            toast.show({ severity: 'error', summary: t(props.saveErrorTranslationKey, object) });
+                        }
+                        else {
+                            toast.show({ severity: 'success', summary: t(props.saveSuccessTranslationKey, object) });
+                        }
+                        id = ((_a = result.data) === null || _a === void 0 ? void 0 : _a.id) || props.id;
+                        if (!(id != null && id != "null")) return [3 /*break*/, 2];
+                        return [4 /*yield*/, getObjectQuery(id)];
+                    case 1:
+                        reload = _b.sent();
+                        setObject(reload.data);
+                        props.onSaved(reload.data);
+                        _b.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        });
+    }
+    function createNewObject() {
+        var result = {};
+        for (var _i = 0, _a = props.fields; _i < _a.length; _i++) {
+            var field = _a[_i];
+            result[field.key] = generateDefaultValue(field.type);
+        }
+        return result;
+    }
+    function asyncUpdateObject() {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, updateObjectQuery(object)];
+                    case 1:
+                        result = _a.sent();
+                        return [4 /*yield*/, handleUpdateResponse(result)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }
+    function asyncCreateObject() {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, createObjectQuery(object)];
+                    case 1:
+                        result = _a.sent();
+                        return [4 /*yield*/, handleUpdateResponse(result)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }
+    function save() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(props.id != null && props.id != "null")) return [3 /*break*/, 2];
+                        return [4 /*yield*/, asyncUpdateObject()];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, asyncCreateObject()];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    }
+    function onFormChanged(changed) {
+        setObject(__assign(__assign({}, object), changed));
+    }
+    function renderForm() {
+        return React__default.createElement(Form, { object: object, rows: rows, onChange: function (changed) { return onFormChanged(changed); }, onSave: function () { return save(); } });
+    }
+    return React__default.createElement(Card, { className: 'pageWrapper' }, isLoading || object == null && !isError ? React__default.createElement(FormSkeleton, { rows: rows }) : isError ? React__default.createElement(FetchError, { error: error }) : renderForm());
+}
 
 var ToolbarBase = ComponentBase.extend({
   defaultProps: {
@@ -29733,7 +29726,7 @@ Toolbar.displayName = 'Toolbar';
 function ApplicationToolbar(_a) {
     var title = _a.title, children = _a.children, backRoute = _a.backRoute, rest = __rest(_a, ["title", "children", "backRoute"]);
     var router = useRouter();
-    var configuration = useConfiguration$1();
+    var configuration = useConfiguration();
     var centerContent = function () { return React__default.createElement(React__default.Fragment, null, title); };
     var startContent = function () { return React__default.createElement(React__default.Fragment, null,
         React__default.createElement(Button, { icon: React__default.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faArrowLeft }), onClick: function () { return !backRoute ? router.back() : router.replace(backRoute); } })); };

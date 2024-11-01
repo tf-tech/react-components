@@ -12,10 +12,10 @@ import {Button} from "primereact/button";
 import {useTranslations} from "next-intl";
 import {confirmDialog} from "primereact/confirmdialog";
 import {Skeleton} from "primereact/skeleton";
-import {useNotification} from "@/components/notification";
 import "./data-table.scss";
-import {useConfiguration} from "@/components/configuration";
-import {MutationQuery, UseQuery} from "@/lib/model/QueryTypes";
+import {MutationQuery, UseQuery} from "../../lib";
+import {useConfiguration} from "../configuration";
+import {useNotification} from "../notification";
 
 export interface ColumnDefinition {
     key: string,

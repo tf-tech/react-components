@@ -1,6 +1,6 @@
 import React from "react";
 import "./data-table.scss";
-import { MutationQuery, UseQuery } from "@/lib/model/QueryTypes";
+import { MutationQuery, UseQuery } from "../../lib";
 export interface ColumnDefinition {
     key: string;
     translationKey: string;

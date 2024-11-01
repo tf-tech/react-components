@@ -1,5 +1,5 @@
 import {createContext, useContext} from "react";
-import {Configuration} from "@/components/configuration/Configuration";
+import {Configuration} from "./Configuration";
 
 let DefaultConfigurationContext = createContext<Configuration>(null!);
 

@@ -1,7 +1,7 @@
 import React, { MutableRefObject } from "react";
 import './object-editor.scss';
-import { EditorField } from "@/components/form/FormTypes";
-import { LazyUseQuery, MutationQuery } from "@/lib/model/QueryTypes";
+import { EditorField } from "./FormTypes";
+import { LazyUseQuery, MutationQuery } from "../../lib";
 export interface ObjectEditorRef {
     save(): void;
 }

@@ -8,8 +8,8 @@ import React, {FormEvent} from "react";
 import "./object-editor.scss";
 import {classNames} from "primereact/utils";
 import {useTranslations} from "next-intl";
-import CheckboxSelection from "@/components/form/CheckboxSelection";
-import {ChangeListener, EditorField} from "@/components/form/FormTypes";
+import {ChangeListener, EditorField} from "./FormTypes";
+import CheckboxSelection from "./CheckboxSelection";
 
 interface FormProps<TObject> {
     object: TObject

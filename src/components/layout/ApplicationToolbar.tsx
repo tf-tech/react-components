@@ -5,7 +5,7 @@ import {ReactNode} from "react";
 import {Button} from "primereact/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useRouter} from "next/navigation";
-import {useConfiguration} from "@/components/configuration";
+import {useConfiguration} from "../configuration";
 
 interface ApplicationToolbarParams {
     title: string | ReactNode,

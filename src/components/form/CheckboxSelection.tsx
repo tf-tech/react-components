@@ -1,15 +1,15 @@
 import React from "react";
-import {UseQuery} from "@/lib/model/QueryTypes";
 import {useEffect, useState} from "react";
 import {Checkbox} from "primereact/checkbox";
 import './object-editor.scss';
+import {UseQuery} from "../../lib";
 
-interface CheckboxSelectionOption {
+export interface CheckboxSelectionOption {
     id: string
     name: string
 }
 
-interface CheckboxSelectionProps {
+export interface CheckboxSelectionProps {
     onChange: (selectedValues: any[]) => void;
     value: any[]
     options: CheckboxSelectionOption[] | UseQuery<void, CheckboxSelectionOption[]>;

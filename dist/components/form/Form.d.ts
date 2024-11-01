@@ -1,6 +1,6 @@
 import React from "react";
 import "./object-editor.scss";
-import { EditorField } from "@/components/form/FormTypes";
+import { EditorField } from "./FormTypes";
 interface FormProps<TObject> {
     object: TObject;
     rows: EditorField[][];
