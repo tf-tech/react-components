@@ -10,6 +10,11 @@ import {classNames} from "primereact/utils";
 import {useTranslations} from "next-intl";
 import {ChangeListener, EditorField} from "./FormTypes";
 import CheckboxSelection from "./CheckboxSelection";
+import {Button} from "primereact/button";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {useConfiguration} from "../configuration";
+import {config} from "@fortawesome/fontawesome-svg-core";
+import RandExp from "randexp";
 
 interface FormProps<TObject> {
     object: TObject
@@ -60,8 +65,26 @@ function renderDateTimeSelector(field: EditorField, obj: any, onChange: ChangeLi
 }
 
 function renderCheckSelection(field: EditorField, obj: any, onChange: ChangeListener) {
-    return <div className={'formWrapRow'}>
+    return <div className={'form-check-selection-row'}>
         <CheckboxSelection value={obj[field.key]} onChange={(e) => onChange({[field.key]: e})} options={field.options!} />
+    </div>
+}
+
+function renderGeneratedSecret(field: EditorField, obj: any, onChange: ChangeListener) {
+    let configuration = useConfiguration()
+    let t = useTranslations()
+
+    function generateNewValue(e : React.MouseEvent) {
+        e.preventDefault()
+        let r = new RandExp(field.allowedCharacters??"[a-zA-Z0-9!\:\-_\"\§\%\&\\\(\)\.\,]{32}")
+        onChange({[field.key]: r.gen()})
+    }
+
+    return <div className={'formRow'}>
+        <div className="p-inputgroup">
+            {renderInputText(field.key, obj[field.key], (val) => onChange({[field.key]: val}), !(field.editable ?? true))}
+            <Button icon={<FontAwesomeIcon icon={configuration.iconSet.faRotateRight}/>} onClick={(e) => generateNewValue(e)}>{t(configuration.translations.generate)}</Button>
+        </div>
     </div>
 }
 
@@ -85,6 +108,8 @@ function renderInputField(field: EditorField, obj: any, onChange: ChangeListener
             return null
         case 'selection-check':
             return renderCheckSelection(field, obj, onChange);
+        case 'generated-secret':
+            return renderGeneratedSecret(field, obj, onChange);
     }
 }
 

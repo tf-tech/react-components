@@ -2,7 +2,7 @@
   "name": "react-components",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.ts",
   "module": "dist/index.js",
   "files": [
     "dist"
@@ -11,7 +11,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "rollup": "rollup -c"
+    "rollup": "rollup -c",
+    "rollup:dev": "rollup -c --watch"
   },
   "repository": {
     "type": "git",
@@ -26,12 +27,14 @@
   "peerDependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "quill": "^2.0.2",
     "luxon": "^3.5.0",
     "next": "14.2.10",
     "next-intl": "^3.19.0",
     "primereact": "^10.8.2",
     "react": "^18.3.1",
-    "sass": "^1.80.5"
+    "sass": "^1.80.5",
+    "randexp": "^0.5.3"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
@@ -41,6 +44,7 @@
     "@rollup/plugin-typescript": "^12.1.1",
     "@types/luxon": "^3.4.2",
     "@types/react": "^18.3.12",
+    "quill": "^2.0.2",
     "cypress": "^13.15.0",
     "luxon": "^3.5.0",
     "next": "14.2.10",
@@ -53,6 +57,7 @@
     "rollup-plugin-scss": "3",
     "sass": "^1.80.5",
     "tslib": "^2.8.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "randexp": "^0.5.3"
   }
 }

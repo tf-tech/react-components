@@ -5,11 +5,17 @@ export interface Icons {
     faEye: IconDefinition
     faSearch: IconDefinition
     faTrash: IconDefinition
-    faXmark: IconDefinition
+    faXmark: IconDefinition,
+    faRotateRight: IconDefinition
+}
+
+export interface Translations {
+    generate: string
 }
 
 export interface Configuration {
-    iconSet: Icons
+    iconSet: Icons,
+    translations: Translations
 }
 
 export function buildIconsFromIconSet(iconSet: Icons): Icons {
@@ -19,5 +25,6 @@ export function buildIconsFromIconSet(iconSet: Icons): Icons {
         faSearch: iconSet.faSearch,
         faTrash: iconSet.faTrash,
         faXmark: iconSet.faXmark,
+        faRotateRight: iconSet.faRotateRight,
     }
 }

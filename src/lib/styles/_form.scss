@@ -18,9 +18,25 @@
   > * {
     flex-grow: 1;
   }
+
+  .p-inputwrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+
+    > div {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
+
+      > input {
+        flex-grow: 1;
+      }
+    }
+  }
 }
 
-.formWrapRow {
+.form-check-selection-row {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;

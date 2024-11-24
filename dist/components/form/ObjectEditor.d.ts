@@ -16,6 +16,7 @@ interface ObjectEditorProps<TObject> {
     onSaved: (newObject: TObject) => void;
     saveSuccessTranslationKey: string;
     saveErrorTranslationKey: string;
+    additionalContent?: (object: TObject, onChange: (change: any) => void) => any | React.ReactElement | React.ReactElement[];
 }
 export default function ObjectEditor(props: ObjectEditorProps<any>): React.JSX.Element;
 export {};

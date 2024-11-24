@@ -3,7 +3,7 @@ import { CheckboxSelectionOption } from "./CheckboxSelection";
 export interface ChangeListener {
     (change: any): void;
 }
-export type EditorFieldType = 'text' | 'editor' | 'number' | 'date' | 'datetime' | 'password' | 'email' | 'option' | 'option-multi' | 'selection-check' | 'selection-radio' | undefined;
+export type EditorFieldType = 'text' | 'editor' | 'number' | 'date' | 'datetime' | 'password' | 'email' | 'option' | 'option-multi' | 'selection-check' | 'selection-radio' | 'generated-secret' | undefined;
 export interface EditorField {
     key: string;
     editable?: boolean;
@@ -11,5 +11,6 @@ export interface EditorField {
     placeholderTranslationKey?: string;
     type: EditorFieldType;
     size?: number;
+    allowedCharacters?: string;
     options?: CheckboxSelectionOption[] | UseQuery<void, CheckboxSelectionOption[]>;
 }

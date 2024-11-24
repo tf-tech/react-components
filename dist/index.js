@@ -20,6 +20,7 @@ import { Calendar } from 'primereact/calendar';
 import { DateTime } from 'luxon';
 import { classNames } from 'primereact/utils';
 import { Checkbox } from 'primereact/checkbox';
+import RandExp from 'randexp';
 import { Card } from 'primereact/card';
 import { Toolbar } from 'primereact/toolbar';
 
@@ -64,6 +65,7 @@ function buildIconsFromIconSet(iconSet) {
         faSearch: iconSet.faSearch,
         faTrash: iconSet.faTrash,
         faXmark: iconSet.faXmark,
+        faRotateRight: iconSet.faRotateRight,
     };
 }
 
@@ -252,11 +254,30 @@ function renderDateTimeSelector(field, obj, onChange) {
     }, true, !((_a = field.editable) !== null && _a !== void 0 ? _a : true));
 }
 function renderCheckSelection(field, obj, onChange) {
-    return React.createElement("div", { className: 'formWrapRow' },
+    return React.createElement("div", { className: 'form-check-selection-row' },
         React.createElement(CheckboxSelection, { value: obj[field.key], onChange: function (e) {
                 var _a;
                 return onChange((_a = {}, _a[field.key] = e, _a));
             }, options: field.options }));
+}
+function renderGeneratedSecret(field, obj, onChange) {
+    var _a;
+    var configuration = useConfiguration();
+    var t = useTranslations();
+    function generateNewValue(e) {
+        var _a;
+        var _b;
+        e.preventDefault();
+        var r = new RandExp((_b = field.allowedCharacters) !== null && _b !== void 0 ? _b : "[a-zA-Z0-9!\:\-_\"\§\%\&\\\(\)\.\,]{32}");
+        onChange((_a = {}, _a[field.key] = r.gen(), _a));
+    }
+    return React.createElement("div", { className: 'formRow' },
+        React.createElement("div", { className: "p-inputgroup" },
+            renderInputText(field.key, obj[field.key], function (val) {
+                var _a;
+                return onChange((_a = {}, _a[field.key] = val, _a));
+            }, !((_a = field.editable) !== null && _a !== void 0 ? _a : true)),
+            React.createElement(Button, { icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faRotateRight }), onClick: function (e) { return generateNewValue(e); } }, t(configuration.translations.generate))));
 }
 function renderInputField(field, obj, onChange) {
     switch (field.type) {
@@ -278,6 +299,8 @@ function renderInputField(field, obj, onChange) {
             return null;
         case 'selection-check':
             return renderCheckSelection(field, obj, onChange);
+        case 'generated-secret':
+            return renderGeneratedSecret(field, obj, onChange);
     }
 }
 function Form(props) {
@@ -355,11 +378,16 @@ function generateDefaultValue(type) {
         case 'email':
         case 'password':
         case 'editor':
-        case 'text': return "";
-        case 'number': return 0;
+        case 'generated-secret':
+        case 'text':
+            return "";
+        case 'number':
+            return 0;
         case 'date':
-        case 'datetime': return new Date();
-        case 'selection-check': return [];
+        case 'datetime':
+            return new Date();
+        case 'selection-check':
+            return [];
     }
 }
 function ObjectEditor(props) {
@@ -371,15 +399,17 @@ function ObjectEditor(props) {
     var toast = useNotification();
     var rows = clusterFields(props.fields);
     useEffect(function () {
-        if (apiObject != null)
+        if (apiObject != null) {
             setObject(apiObject);
+        }
     }, [isLoading, apiObject]);
     useEffect(function () {
         if (props.id != null && props.id != "null") {
             getObjectQuery(props.id);
         }
         else {
-            setObject(createNewObject());
+            var newObject = createNewObject();
+            setObject(newObject);
         }
     }, [props.id, getObjectQuery]);
     useEffect(function () {
@@ -477,7 +507,10 @@ function ObjectEditor(props) {
     function renderForm() {
         return React.createElement(Form, { object: object, rows: rows, onChange: function (changed) { return onFormChanged(changed); }, onSave: function () { return save(); } });
     }
-    return React.createElement(Card, { className: 'pageWrapper' }, isLoading || object == null && !isError ? React.createElement(FormSkeleton, { rows: rows }) : isError ? React.createElement(FetchError, { error: error }) : renderForm());
+    return React.createElement(React.Fragment, null,
+        React.createElement(Card, { className: 'pageWrapper' }, isLoading || object == null && !isError ? React.createElement(FormSkeleton, { rows: rows }) : isError ?
+            React.createElement(FetchError, { error: error }) : renderForm()),
+        props.additionalContent != null && !isLoading && object != null ? props.additionalContent(object, onFormChanged) : null);
 }
 
 function ApplicationToolbar(_a) {
@@ -488,7 +521,7 @@ function ApplicationToolbar(_a) {
     var startContent = function () { return React.createElement(React.Fragment, null,
         React.createElement(Button, { icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faArrowLeft }), onClick: function () { return !backRoute ? router.back() : router.replace(backRoute); } })); };
     return React.createElement(React.Fragment, null,
-        React.createElement(Toolbar, __assign({ className: 'applicationToolbar', center: centerContent, end: children, start: startContent }, rest)));
+        React.createElement(Toolbar, __assign({ className: 'applicationToolbar', center: centerContent, end: React.createElement("span", { className: 'application-toolbar-end' }, children), start: startContent }, rest)));
 }
 
 function FlexClear() {

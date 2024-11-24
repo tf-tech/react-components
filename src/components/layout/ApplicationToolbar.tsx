@@ -27,6 +27,6 @@ export default function ApplicationToolbar({title, children, backRoute, ...rest}
     </>
 
     return <>
-        <Toolbar className={'applicationToolbar'} center={centerContent} end={children} start={startContent} {...rest} />
+        <Toolbar className={'applicationToolbar'} center={centerContent} end={<span className={'application-toolbar-end'}>{children}</span>} start={startContent} {...rest} />
     </>;
 }

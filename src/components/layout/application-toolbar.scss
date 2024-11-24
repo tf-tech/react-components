@@ -6,3 +6,8 @@
   border: 0;
   border-bottom: 1px solid gray;
 }
+
+.application-toolbar-end {
+  display: inline-flex;
+  gap: .5rem;
+}

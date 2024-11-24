@@ -24,6 +24,7 @@ interface ObjectEditorProps<TObject> {
     onSaved: (newObject: TObject) => void
     saveSuccessTranslationKey: string
     saveErrorTranslationKey: string
+    additionalContent?: (object:TObject, onChange: (change: any) => void) => any | React.ReactElement | React.ReactElement[]
 }
 
 function clusterFields(fields: EditorField[]): EditorField[][] {
@@ -50,16 +51,21 @@ function clusterFields(fields: EditorField[]): EditorField[][] {
     return rows;
 }
 
-function generateDefaultValue(type: EditorFieldType):any {
+function generateDefaultValue(type: EditorFieldType): any {
     switch (type) {
         case 'email':
         case 'password':
         case 'editor':
-        case 'text': return "";
-        case 'number': return 0;
+        case 'generated-secret':
+        case 'text':
+            return "";
+        case 'number':
+            return 0;
         case 'date':
-        case 'datetime': return new Date();
-        case 'selection-check': return [];
+        case 'datetime':
+            return new Date();
+        case 'selection-check':
+            return [];
     }
 }
 
@@ -75,21 +81,23 @@ export default function ObjectEditor(props: ObjectEditorProps<any>) {
     let rows = clusterFields(props.fields)
 
     useEffect(() => {
-        if(apiObject != null)
+        if (apiObject != null) {
             setObject(apiObject)
+        }
     }, [isLoading, apiObject]);
 
     useEffect(() => {
-        if(props.id != null && props.id != "null") {
+        if (props.id != null && props.id != "null") {
             getObjectQuery(props.id);
         } else {
-            setObject(createNewObject())
+            let newObject = createNewObject();
+            setObject(newObject)
         }
     }, [props.id, getObjectQuery]);
 
     useEffect(() => {
-        if(props.objectEditorRef != null)
-            props.objectEditorRef.current = { save }
+        if (props.objectEditorRef != null)
+            props.objectEditorRef.current = {save}
     });
 
     async function handleUpdateResponse<BaseQuery, TagTypes, ReducerPath>(result: {
@@ -110,7 +118,7 @@ export default function ObjectEditor(props: ObjectEditorProps<any>) {
     }
 
     function createNewObject(): any {
-        let result:any = {};
+        let result: any = {};
         for (let field of props.fields) {
             result[field.key] = generateDefaultValue(field.type);
         }
@@ -140,10 +148,14 @@ export default function ObjectEditor(props: ObjectEditorProps<any>) {
     }
 
     function renderForm() {
-        return <Form object={object} rows={rows} onChange={(changed) => onFormChanged(changed)} onSave={() => save()} />
+        return <Form object={object} rows={rows} onChange={(changed) => onFormChanged(changed)} onSave={() => save()}/>
     }
 
-    return <Card className={'pageWrapper'}>
-        {isLoading || object == null && !isError ? <FormSkeleton rows={rows} /> : isError ? <FetchError error={error} /> : renderForm()}
-    </Card>
+    return <>
+        <Card className={'pageWrapper'}>
+            {isLoading || object == null && !isError ? <FormSkeleton rows={rows}/> : isError ?
+                <FetchError error={error}/> : renderForm()}
+        </Card>
+        {props.additionalContent != null && !isLoading && object != null ? props.additionalContent(object, onFormChanged) : null}
+    </>
 }
