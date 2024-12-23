@@ -2,10 +2,8 @@
 export {Notification, NotificationContext, useNotification} from './components'
 export type {DataTableProps, ColumnDefinition} from './components';
 export {DataTable} from './components';
-export {
-    ObjectEditor, ObjectEditorRef, CheckboxSelection, FormSkeleton, Form, CheckboxSelectionOption, CheckboxSelectionProps
-} from './components';
-export type {EditorFieldType, EditorField, ChangeListener} from './components';
+export {ObjectEditor, CheckboxSelection, FormSkeleton, Form} from './components';
+export type {EditorFieldType, EditorField, ChangeListener, ObjectEditorRef, CheckboxSelectionOption, CheckboxSelectionProps} from './components';
 export {FetchError} from './components';
 
 export type {Configuration, Icons} from './components';
