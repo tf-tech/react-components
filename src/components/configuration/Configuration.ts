@@ -10,7 +10,13 @@ export interface Icons {
 }
 
 export interface Translations {
+    search: string
+    search_reset: string
     generate: string
+    id: string
+    delete: string
+    abort: string
+    edit: string
 }
 
 export interface Configuration {

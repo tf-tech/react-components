@@ -78,10 +78,10 @@ export default function DataTable(props: DataTableProps<any>) {
                         <FontAwesomeIcon icon={configuration.iconSet.faSearch} height={"1em"} width={"1em"}/>
                     </InputIcon>
                     <InputText value={globalFilterValue} onChange={e => onGlobalFilterChange(e.target.value)}
-                               placeholder={t('general.search')} data-test='txt-list-search'/>
+                               placeholder={t(configuration.translations.search)} data-test='txt-list-search'/>
                 </IconField>
                 <Button severity="secondary" icon={<FontAwesomeIcon icon={configuration.iconSet.faXmark}/>} onClick={() => clearFilter()}
-                        data-test='btn-list-search-clear'/>
+                        data-test='btn-list-search-clear' tooltip={t(configuration.translations.search_reset)} tooltipOptions={{position: "bottom"}}/>
             </div>
         );
     };
@@ -109,8 +109,8 @@ export default function DataTable(props: DataTableProps<any>) {
             accept: () => {
                 deleteItem(rowData)
             },
-            acceptLabel: t('general.delete'),
-            rejectLabel: t('general.abort'),
+            acceptLabel: t(configuration.translations.delete),
+            rejectLabel: t(configuration.translations.abort),
             acceptClassName: "p-button-danger"
         });
     }
@@ -127,10 +127,12 @@ export default function DataTable(props: DataTableProps<any>) {
             <>
                 {isViewable ?
                     <Button icon={<FontAwesomeIcon icon={configuration.iconSet.faEye}/>} severity="info" onClick={() => openItem(rowData)}
-                            data-test={`btn-view-${rowData.id}`}/> : null}
+                            data-test={`btn-view-${rowData.id}`}
+                            tooltip={t(configuration.translations.edit)} tooltipOptions={{position: "bottom"}}/> : null}
                 {isDeletable ? <Button icon={<FontAwesomeIcon icon={configuration.iconSet.faTrash}/>} severity="danger"
                                        onClick={() => deleteItemPrompt(rowData)}
-                                       data-test={`btn-delete-${rowData.id}`}/> : null}
+                                       data-test={`btn-delete-${rowData.id}`}
+                                       tooltip={t(configuration.translations.delete)}  tooltipOptions={{position: "bottom"}}/> : null}
             </>
         );
     };
@@ -142,7 +144,7 @@ export default function DataTable(props: DataTableProps<any>) {
                          globalFilterFields={['id', 'name']} filters={filters} onFilter={(f) => setFilters(f.filters)}
                          emptyMessage={t(props.emptyListTranslationKey)} globalFilter={globalFilterValue}
                          header={renderHeader()} data-test={props.dataTest}>
-                <Column field="id" header={t('general.id')} style={{maxWidth: '10em'}}/>
+                <Column field="id" header={t(configuration.translations.id)} style={{maxWidth: '10em'}}/>
                 {props.columns.map(c => <Column key={c.key} field={c.key} header={t(c.translationKey)}/>)}
                 <Column body={actionBodyTemplate} exportable={false} className={'actionColumn'}></Column>
             </PRDataTable>}

@@ -119,8 +119,8 @@ function DataTable(props) {
             React.createElement(IconField, { iconPosition: "left" },
                 React.createElement(InputIcon, null,
                     React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faSearch, height: "1em", width: "1em" })),
-                React.createElement(InputText, { value: globalFilterValue, onChange: function (e) { return onGlobalFilterChange(e.target.value); }, placeholder: t('general.search'), "data-test": 'txt-list-search' })),
-            React.createElement(Button, { severity: "secondary", icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faXmark }), onClick: function () { return clearFilter(); }, "data-test": 'btn-list-search-clear' })));
+                React.createElement(InputText, { value: globalFilterValue, onChange: function (e) { return onGlobalFilterChange(e.target.value); }, placeholder: t(configuration.translations.search), "data-test": 'txt-list-search' })),
+            React.createElement(Button, { severity: "secondary", icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faXmark }), onClick: function () { return clearFilter(); }, "data-test": 'btn-list-search-clear', tooltip: t(configuration.translations.search_reset), tooltipOptions: { position: "bottom" } })));
     };
     var deleteItem = function (rowData) { return __awaiter(_this, void 0, void 0, function () {
         var res;
@@ -153,8 +153,8 @@ function DataTable(props) {
             accept: function () {
                 deleteItem(rowData);
             },
-            acceptLabel: t('general.delete'),
-            rejectLabel: t('general.abort'),
+            acceptLabel: t(configuration.translations.delete),
+            rejectLabel: t(configuration.translations.abort),
             acceptClassName: "p-button-danger"
         });
     };
@@ -166,13 +166,13 @@ function DataTable(props) {
         var isDeletable = props.isDeletable != undefined ? props.isDeletable(rowData) : true;
         return (React.createElement(React.Fragment, null,
             isViewable ?
-                React.createElement(Button, { icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faEye }), severity: "info", onClick: function () { return openItem(rowData); }, "data-test": "btn-view-".concat(rowData.id) }) : null,
-            isDeletable ? React.createElement(Button, { icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faTrash }), severity: "danger", onClick: function () { return deleteItemPrompt(rowData); }, "data-test": "btn-delete-".concat(rowData.id) }) : null));
+                React.createElement(Button, { icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faEye }), severity: "info", onClick: function () { return openItem(rowData); }, "data-test": "btn-view-".concat(rowData.id), tooltip: t(configuration.translations.edit), tooltipOptions: { position: "bottom" } }) : null,
+            isDeletable ? React.createElement(Button, { icon: React.createElement(FontAwesomeIcon, { icon: configuration.iconSet.faTrash }), severity: "danger", onClick: function () { return deleteItemPrompt(rowData); }, "data-test": "btn-delete-".concat(rowData.id), tooltip: t(configuration.translations.delete), tooltipOptions: { position: "bottom" } }) : null));
     };
     return React.createElement(React.Fragment, null, isLoading || isFetching ? React.createElement("div", { className: 'pageLoading' },
         React.createElement(Skeleton, null)) :
         React.createElement(DataTable$1, { value: data, scrollable: true, paginator: true, rowsPerPageOptions: [10, 20, 50, 100], rows: 10, globalFilterFields: ['id', 'name'], filters: filters, onFilter: function (f) { return setFilters(f.filters); }, emptyMessage: t(props.emptyListTranslationKey), globalFilter: globalFilterValue, header: renderHeader(), "data-test": props.dataTest },
-            React.createElement(Column, { field: "id", header: t('general.id'), style: { maxWidth: '10em' } }),
+            React.createElement(Column, { field: "id", header: t(configuration.translations.id), style: { maxWidth: '10em' } }),
             props.columns.map(function (c) { return React.createElement(Column, { key: c.key, field: c.key, header: t(c.translationKey) }); }),
             React.createElement(Column, { body: actionBodyTemplate, exportable: false, className: 'actionColumn' })));
 }

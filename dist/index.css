@@ -22,25 +22,6 @@
   background: white;
 }
 
-.applicationToolbar {
-  position: static;
-  margin: -1em;
-  margin-bottom: 0;
-  border-radius: 0;
-  border: 0;
-  border-bottom: 1px solid gray;
-}
-
-.application-toolbar-end {
-  display: inline-flex;
-  gap: 0.5rem;
-}
-
-.flexClear {
-  flex-grow: 1;
-  display: inline-flex;
-}
-
 .formField {
   display: flex;
   flex-direction: column;
@@ -148,4 +129,23 @@
 
 .size-12 {
   flex: 12;
+}
+
+.applicationToolbar {
+  position: static;
+  margin: -1em;
+  margin-bottom: 0;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid gray;
+}
+
+.application-toolbar-end {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.flexClear {
+  flex-grow: 1;
+  display: inline-flex;
 }

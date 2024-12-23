@@ -149,7 +149,13 @@ interface Icons {
     faRotateRight: IconDefinition;
 }
 interface Translations {
+    search: string;
+    search_reset: string;
     generate: string;
+    id: string;
+    delete: string;
+    abort: string;
+    edit: string;
 }
 interface Configuration {
     iconSet: Icons;

@@ -8,7 +8,13 @@ export interface Icons {
     faRotateRight: IconDefinition;
 }
 export interface Translations {
+    search: string;
+    search_reset: string;
     generate: string;
+    id: string;
+    delete: string;
+    abort: string;
+    edit: string;
 }
 export interface Configuration {
     iconSet: Icons;
