@@ -13,8 +13,8 @@ import CheckboxSelection from "./CheckboxSelection";
 import {Button} from "primereact/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useConfiguration} from "../configuration";
-import {config} from "@fortawesome/fontawesome-svg-core";
 import RandExp from "randexp";
+import Dropdown from "./Dropdown";
 
 interface FormProps<TObject> {
     object: TObject
@@ -52,8 +52,11 @@ function renderEditor(field: EditorField, obj: any, onChange: ChangeListener) {
 
 function renderCalendar(id: string, value: any, onChange: ChangeListener, showTime: boolean, readonly: boolean) {
     return <Calendar selectionMode={'single'} value={value} onChange={(e) => onChange(e.value)} showTime={showTime}
-                     showWeek
-                     hourFormat="24" dateFormat={"dd.mm.yy"} data-test={`dd-${id}`} disabled={readonly}/>
+                     showWeek hourFormat="24" dateFormat={"dd.mm.yy"} data-test={`dd-${id}`} disabled={readonly}/>
+}
+
+function renderOption(field: EditorField, obj: any, onChange: ChangeListener) {
+    return <Dropdown value={obj[field.key]} onChange={e => onChange({[field.key]: e})} options={field.options!} />
 }
 
 function renderDateSelector(field: EditorField, obj: any, onChange: ChangeListener) {
@@ -105,7 +108,7 @@ function renderInputField(field: EditorField, obj: any, onChange: ChangeListener
         case 'password':
             return renderPassword(field, obj, onChange);
         case 'option':
-            return null
+            return renderOption(field, obj, onChange);
         case 'selection-check':
             return renderCheckSelection(field, obj, onChange);
         case 'generated-secret':

@@ -21,6 +21,7 @@ import { DateTime } from 'luxon';
 import { classNames } from 'primereact/utils';
 import { Checkbox } from 'primereact/checkbox';
 import RandExp from 'randexp';
+import { Dropdown as Dropdown$1 } from 'primereact/dropdown';
 import { Card } from 'primereact/card';
 import { Toolbar } from 'primereact/toolbar';
 
@@ -198,6 +199,24 @@ function CheckboxSelection(props) {
         React.createElement("label", { htmlFor: "chk-".concat(o.id) }, o.name)); }));
 }
 
+function Dropdown(props) {
+    var _a = useState(), opts = _a[0], setOpts = _a[1];
+    console.log(props);
+    if (typeof props.options === "function") {
+        var _b = props.options(), data_1 = _b.data, isLoading_1 = _b.isLoading;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(function () {
+            if (!isLoading_1 && data_1 != null)
+                setOpts(data_1);
+        }, [data_1, isLoading_1]);
+    }
+    else {
+        setOpts(props.options);
+    }
+    return React.createElement(React.Fragment, null,
+        React.createElement(Dropdown$1, { onChange: function (e) { return props.onChange(e.value); }, value: props.value, options: opts === null || opts === void 0 ? void 0 : opts.map(function (o) { return ({ label: o.name, value: o.id }); }), optionLabel: "label", optionValue: "value", placeholder: "Select...", filter: true, filterPlaceholder: "Search...", showClear: true, filterMatchMode: "contains", filterInputAutoFocus: true, resetFilterOnHide: true }));
+}
+
 function renderInputText(id, value, onChange, readonly, keyFilter) {
     return React.createElement(InputText, { id: id, value: value, onChange: function (e) { return onChange(e.target.value); }, keyfilter: keyFilter, "data-test": "txt-".concat(id), disabled: readonly });
 }
@@ -238,6 +257,12 @@ function renderEditor(field, obj, onChange) {
 }
 function renderCalendar(id, value, onChange, showTime, readonly) {
     return React.createElement(Calendar, { selectionMode: 'single', value: value, onChange: function (e) { return onChange(e.value); }, showTime: showTime, showWeek: true, hourFormat: "24", dateFormat: "dd.mm.yy", "data-test": "dd-".concat(id), disabled: readonly });
+}
+function renderOption(field, obj, onChange) {
+    return React.createElement(Dropdown, { value: obj[field.key], onChange: function (e) {
+            var _a;
+            return onChange((_a = {}, _a[field.key] = e, _a));
+        }, options: field.options });
 }
 function renderDateSelector(field, obj, onChange) {
     var _a;
@@ -296,7 +321,7 @@ function renderInputField(field, obj, onChange) {
         case 'password':
             return renderPassword(field, obj, onChange);
         case 'option':
-            return null;
+            return renderOption(field, obj, onChange);
         case 'selection-check':
             return renderCheckSelection(field, obj, onChange);
         case 'generated-secret':
@@ -528,5 +553,5 @@ function FlexClear() {
     return React.createElement("span", { className: 'flexClear' });
 }
 
-export { ApplicationToolbar, CheckboxSelection, ConfigurationContext, ConfigurationProvider, DataTable, FetchError, FlexClear, Form, FormSkeleton, LinkButton, Notification, NotificationContext, ObjectEditor, buildIconsFromIconSet, useConfiguration, useNotification };
+export { ApplicationToolbar, CheckboxSelection, ConfigurationContext, ConfigurationProvider, DataTable, Dropdown, FetchError, FlexClear, Form, FormSkeleton, LinkButton, Notification, NotificationContext, ObjectEditor, buildIconsFromIconSet, useConfiguration, useNotification };
 //# sourceMappingURL=index.js.map

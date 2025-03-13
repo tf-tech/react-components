@@ -130,6 +130,17 @@ interface ObjectEditorProps<TObject> {
 }
 declare function ObjectEditor(props: ObjectEditorProps<any>): React__default.JSX.Element;
 
+interface DropdownOption {
+    id: string;
+    name: string;
+}
+interface DropdownProps {
+    onChange: (selectedValues: any) => void;
+    value: any[];
+    options: DropdownOption[] | UseQuery<void, DropdownOption[]>;
+}
+declare function Dropdown(props: DropdownProps): React__default.JSX.Element;
+
 interface SerializedError {
     name?: string;
     message?: string;
@@ -180,4 +191,4 @@ declare function ApplicationToolbar({ title, children, backRoute, ...rest }: App
 
 declare function FlexClear(): React__default.JSX.Element;
 
-export { ApplicationToolbar, type ChangeListener, CheckboxSelection, type CheckboxSelectionOption, type CheckboxSelectionProps, type ColumnDefinition, type Configuration, ConfigurationContext, ConfigurationProvider, DataTable, type DataTableProps, type EditorField, type EditorFieldType, FetchError, FlexClear, Form, FormSkeleton, type Icons, type LastQueryInfo, type LazyUseQuery, LinkButton, type LinkButtonProps, type MutationQuery, type MutationQueryResult, type MutationQueryTrigger, Notification, NotificationContext, ObjectEditor, type ObjectEditorRef, type QueryTrigger, type UseQuery, type UseQueryDefinition, type UseQueryResult, buildIconsFromIconSet, useConfiguration, useNotification };
+export { ApplicationToolbar, type ChangeListener, CheckboxSelection, type CheckboxSelectionOption, type CheckboxSelectionProps, type ColumnDefinition, type Configuration, ConfigurationContext, ConfigurationProvider, DataTable, type DataTableProps, Dropdown, type DropdownOption, type EditorField, type EditorFieldType, FetchError, FlexClear, Form, FormSkeleton, type Icons, type LastQueryInfo, type LazyUseQuery, LinkButton, type LinkButtonProps, type MutationQuery, type MutationQueryResult, type MutationQueryTrigger, Notification, NotificationContext, ObjectEditor, type ObjectEditorRef, type QueryTrigger, type UseQuery, type UseQueryDefinition, type UseQueryResult, buildIconsFromIconSet, useConfiguration, useNotification };

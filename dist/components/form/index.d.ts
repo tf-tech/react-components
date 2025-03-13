@@ -5,3 +5,5 @@ export { default as ObjectEditor } from './ObjectEditor';
 export type { ObjectEditorRef } from './ObjectEditor';
 export { default as CheckboxSelection } from './CheckboxSelection';
 export type { CheckboxSelectionOption, CheckboxSelectionProps } from './CheckboxSelection';
+export { default as Dropdown } from './Dropdown';
+export type { DropdownOption } from './Dropdown';

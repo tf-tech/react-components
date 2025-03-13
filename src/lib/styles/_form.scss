@@ -19,7 +19,7 @@
     flex-grow: 1;
   }
 
-  .p-inputwrapper {
+  :global(.p-inputwrapper) {
     flex-grow: 1;
     display: flex;
     flex-direction: row;
@@ -31,6 +31,16 @@
 
       > input {
         flex-grow: 1;
+      }
+    }
+
+    :global(.p-dropdown) {
+      > svg {
+        flex: 0;
+      }
+      :global(.p-dropdown-trigger) {
+        flex: 0;
+        min-width: 3em;
       }
     }
   }

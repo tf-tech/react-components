@@ -18,18 +18,25 @@
 .formRow > * {
   flex-grow: 1;
 }
-.formRow .p-inputwrapper {
+.formRow :global(.p-inputwrapper) {
   flex-grow: 1;
   display: flex;
   flex-direction: row;
 }
-.formRow .p-inputwrapper > div {
+.formRow :global(.p-inputwrapper) > div {
   flex-grow: 1;
   display: flex;
   flex-direction: row;
 }
-.formRow .p-inputwrapper > div > input {
+.formRow :global(.p-inputwrapper) > div > input {
   flex-grow: 1;
+}
+.formRow :global(.p-inputwrapper) :global(.p-dropdown) > svg {
+  flex: 0;
+}
+.formRow :global(.p-inputwrapper) :global(.p-dropdown) :global(.p-dropdown-trigger) {
+  flex: 0;
+  min-width: 3em;
 }
 
 .form-check-selection-row {
@@ -131,11 +138,6 @@
   background: white;
 }
 
-.flexClear {
-  flex-grow: 1;
-  display: inline-flex;
-}
-
 .applicationToolbar {
   position: static;
   margin: -1em;
@@ -148,4 +150,9 @@
 .application-toolbar-end {
   display: inline-flex;
   gap: 0.5rem;
+}
+
+.flexClear {
+  flex-grow: 1;
+  display: inline-flex;
 }
