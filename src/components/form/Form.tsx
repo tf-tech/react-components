@@ -73,6 +73,10 @@ function renderCheckSelection(field: EditorField, obj: any, onChange: ChangeList
     </div>
 }
 
+function renderCustom(field: EditorField, obj: any, onChange: ChangeListener) {
+    return field.render!(field, obj, onChange);
+}
+
 function renderGeneratedSecret(field: EditorField, obj: any, onChange: ChangeListener) {
     let configuration = useConfiguration()
     let t = useTranslations()
@@ -113,6 +117,8 @@ function renderInputField(field: EditorField, obj: any, onChange: ChangeListener
             return renderCheckSelection(field, obj, onChange);
         case 'generated-secret':
             return renderGeneratedSecret(field, obj, onChange);
+        case 'custom':
+            return renderCustom(field, obj, onChange);
     }
 }
 

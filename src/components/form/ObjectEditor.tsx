@@ -51,7 +51,8 @@ function clusterFields(fields: EditorField[]): EditorField[][] {
     return rows;
 }
 
-function generateDefaultValue(type: EditorFieldType): any {
+function generateDefaultValue(type: EditorFieldType, field: EditorField): any {
+    if(field.createInitial != undefined) return field.createInitial()
     switch (type) {
         case 'email':
         case 'password':
@@ -120,7 +121,7 @@ export default function ObjectEditor(props: ObjectEditorProps<any>) {
     function createNewObject(): any {
         let result: any = {};
         for (let field of props.fields) {
-            result[field.key] = generateDefaultValue(field.type);
+            result[field.key] = generateDefaultValue(field.type, field);
         }
         return result;
     }

@@ -285,6 +285,9 @@ function renderCheckSelection(field, obj, onChange) {
                 return onChange((_a = {}, _a[field.key] = e, _a));
             }, options: field.options }));
 }
+function renderCustom(field, obj, onChange) {
+    return field.render(field, obj, onChange);
+}
 function renderGeneratedSecret(field, obj, onChange) {
     var _a;
     var configuration = useConfiguration();
@@ -326,6 +329,8 @@ function renderInputField(field, obj, onChange) {
             return renderCheckSelection(field, obj, onChange);
         case 'generated-secret':
             return renderGeneratedSecret(field, obj, onChange);
+        case 'custom':
+            return renderCustom(field, obj, onChange);
     }
 }
 function Form(props) {
@@ -398,7 +403,9 @@ function clusterFields(fields) {
     }
     return rows;
 }
-function generateDefaultValue(type) {
+function generateDefaultValue(type, field) {
+    if (field.createInitial != undefined)
+        return field.createInitial();
     switch (type) {
         case 'email':
         case 'password':
@@ -471,7 +478,7 @@ function ObjectEditor(props) {
         var result = {};
         for (var _i = 0, _a = props.fields; _i < _a.length; _i++) {
             var field = _a[_i];
-            result[field.key] = generateDefaultValue(field.type);
+            result[field.key] = generateDefaultValue(field.type, field);
         }
         return result;
     }

@@ -87,7 +87,7 @@ declare function CheckboxSelection(props: CheckboxSelectionProps): React__defaul
 interface ChangeListener {
     (change: any): void;
 }
-type EditorFieldType = 'text' | 'editor' | 'number' | 'date' | 'datetime' | 'password' | 'email' | 'option' | 'option-multi' | 'selection-check' | 'selection-radio' | 'generated-secret' | undefined;
+type EditorFieldType = 'text' | 'editor' | 'number' | 'date' | 'datetime' | 'password' | 'email' | 'option' | 'option-multi' | 'selection-check' | 'selection-radio' | 'generated-secret' | 'custom' | undefined;
 interface EditorField {
     key: string;
     editable?: boolean;
@@ -97,6 +97,8 @@ interface EditorField {
     size?: number;
     allowedCharacters?: string;
     options?: CheckboxSelectionOption[] | UseQuery<void, CheckboxSelectionOption[]>;
+    render?: (field: EditorField, object: any, onChange: ChangeListener) => React__default.ReactNode;
+    createInitial?: () => any;
 }
 
 interface FormProps<TObject> {
