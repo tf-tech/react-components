@@ -1,5 +1,5 @@
 import * as React from 'react';
-import React__default, { ReactNode, MutableRefObject } from 'react';
+import React__default, { ReactNode, ReactElement, MutableRefObject } from 'react';
 import { ButtonProps } from 'primereact/button';
 import { IconProp, IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { Toast } from 'primereact/toast';
@@ -106,6 +106,7 @@ interface FormProps<TObject> {
     rows: EditorField[][];
     onChange: (changedObject: any) => void;
     onSave: () => void;
+    children?: ReactNode[] | ReactElement | string | ReactElement[] | ReactNode | undefined;
 }
 declare function Form(props: FormProps<any>): React__default.JSX.Element;
 
@@ -116,6 +117,7 @@ declare function FormSkeleton(props: FormSkeletonProps): React__default.JSX.Elem
 
 interface ObjectEditorRef {
     save(): void;
+    getObject(): any;
 }
 interface ObjectEditorProps<TObject> {
     id: string;
@@ -129,6 +131,7 @@ interface ObjectEditorProps<TObject> {
     saveSuccessTranslationKey: string;
     saveErrorTranslationKey: string;
     additionalContent?: (object: TObject, onChange: (change: any) => void) => any | React__default.ReactElement | React__default.ReactElement[];
+    children?: ReactNode[] | ReactElement | string | ReactElement[] | ReactNode | undefined;
 }
 declare function ObjectEditor(props: ObjectEditorProps<any>): React__default.JSX.Element;
 

@@ -201,7 +201,6 @@ function CheckboxSelection(props) {
 
 function Dropdown(props) {
     var _a = useState(), opts = _a[0], setOpts = _a[1];
-    console.log(props);
     if (typeof props.options === "function") {
         var _b = props.options(), data_1 = _b.data, isLoading_1 = _b.isLoading;
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -349,7 +348,9 @@ function Form(props) {
         props.onSave();
     }
     return React.createElement("form", { onSubmit: function (e) { return onSubmit(e); } },
-        React.createElement("div", { className: 'formColumn' }, props.rows.map(function (r) { return renderRow(r); })));
+        React.createElement("div", { className: 'formColumn' },
+            props.rows.map(function (r) { return renderRow(r); }),
+            props.children));
 }
 
 function FormSkeleton(props) {
@@ -446,7 +447,7 @@ function ObjectEditor(props) {
     }, [props.id, getObjectQuery]);
     useEffect(function () {
         if (props.objectEditorRef != null)
-            props.objectEditorRef.current = { save: save };
+            props.objectEditorRef.current = { save: save, getObject: function () { return object; } };
     });
     function handleUpdateResponse(result) {
         return __awaiter(this, void 0, void 0, function () {
@@ -536,12 +537,12 @@ function ObjectEditor(props) {
     function onFormChanged(changed) {
         setObject(__assign(__assign({}, object), changed));
     }
-    function renderForm() {
-        return React.createElement(Form, { object: object, rows: rows, onChange: function (changed) { return onFormChanged(changed); }, onSave: function () { return save(); } });
+    function renderForm(children) {
+        return React.createElement(Form, { object: object, rows: rows, onChange: function (changed) { return onFormChanged(changed); }, onSave: function () { return save(); } }, children);
     }
     return React.createElement(React.Fragment, null,
         React.createElement(Card, { className: 'pageWrapper' }, isLoading || object == null && !isError ? React.createElement(FormSkeleton, { rows: rows }) : isError ?
-            React.createElement(FetchError, { error: error }) : renderForm()),
+            React.createElement(FetchError, { error: error }) : renderForm(props.children)),
         props.additionalContent != null && !isLoading && object != null ? props.additionalContent(object, onFormChanged) : null);
 }
 

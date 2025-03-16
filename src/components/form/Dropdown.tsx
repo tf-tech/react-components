@@ -18,7 +18,6 @@ export interface DropdownProps {
 export default function Dropdown(props: DropdownProps) {
     let [opts, setOpts] = useState<DropdownOption[]>();
 
-    console.log(props);
     if(typeof props.options === "function") {
         let {data, isLoading} = props.options();
         // eslint-disable-next-line react-hooks/rules-of-hooks

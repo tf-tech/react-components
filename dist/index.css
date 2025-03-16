@@ -1,15 +1,25 @@
-.applicationToolbar {
-  position: static;
-  margin: -1em;
-  margin-bottom: 0;
-  border-radius: 0;
-  border: 0;
-  border-bottom: 1px solid gray;
+.pageLoading {
+  background: white;
+  padding: 0.25rem;
+}
+.pageLoading :global(.p-skeleton) {
+  min-height: 2rem;
 }
 
-.application-toolbar-end {
-  display: inline-flex;
+.filterRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   gap: 0.5rem;
+}
+
+.actionColumn button {
+  margin-right: 0.5rem;
+}
+
+.pageWrapper {
+  padding: 0.75em;
+  background: white;
 }
 
 .formField {
@@ -51,6 +61,12 @@
 .formRow :global(.p-inputwrapper) :global(.p-dropdown) :global(.p-dropdown-trigger) {
   flex: 0;
   min-width: 3em;
+}
+.formRow :global(.p-button) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-check-selection-row {
@@ -133,26 +149,16 @@
   display: inline-flex;
 }
 
-.pageLoading {
-  background: white;
-  padding: 0.25rem;
-}
-.pageLoading :global(.p-skeleton) {
-  min-height: 2rem;
+.applicationToolbar {
+  position: static;
+  margin: -1em;
+  margin-bottom: 0;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid gray;
 }
 
-.filterRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+.application-toolbar-end {
+  display: inline-flex;
   gap: 0.5rem;
-}
-
-.actionColumn button {
-  margin-right: 0.5rem;
-}
-
-.pageWrapper {
-  padding: 0.75em;
-  background: white;
 }

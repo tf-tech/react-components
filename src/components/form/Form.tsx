@@ -4,7 +4,7 @@ import {Password} from "primereact/password";
 import {Editor} from "primereact/editor";
 import {Calendar} from "primereact/calendar";
 import {DateTime} from "luxon";
-import React, {FormEvent} from "react";
+import React, {FormEvent, ReactElement, ReactNode} from "react";
 import "./object-editor.scss";
 import {classNames} from "primereact/utils";
 import {useTranslations} from "next-intl";
@@ -20,7 +20,8 @@ interface FormProps<TObject> {
     object: TObject
     rows: EditorField[][],
     onChange: (changedObject: any) => void,
-    onSave: () => void
+    onSave: () => void,
+    children?: ReactNode[] | ReactElement | string | ReactElement[] | ReactNode | undefined
 }
 
 function renderInputText(id: string, value: any, onChange: ChangeListener, readonly: boolean, keyFilter?: KeyFilterType) {
@@ -146,6 +147,7 @@ export default function Form(props: FormProps<any>) {
     return <form onSubmit={(e) => onSubmit(e)}>
         <div className={'formColumn'}>
             {props.rows.map(r => renderRow(r))}
+            {props.children}
         </div>
     </form>
 }

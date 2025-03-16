@@ -1,5 +1,5 @@
 import {Card} from "primereact/card";
-import React, {MutableRefObject, useEffect, useState} from "react";
+import React, {MutableRefObject, ReactElement, ReactNode, useEffect, useState} from "react";
 import './object-editor.scss';
 import {useTranslations} from "next-intl";
 import {EditorField, EditorFieldType} from "./FormTypes";
@@ -11,6 +11,7 @@ import {FetchError} from "../error";
 
 export interface ObjectEditorRef {
     save(): void
+    getObject(): any
 }
 
 interface ObjectEditorProps<TObject> {
@@ -25,6 +26,7 @@ interface ObjectEditorProps<TObject> {
     saveSuccessTranslationKey: string
     saveErrorTranslationKey: string
     additionalContent?: (object:TObject, onChange: (change: any) => void) => any | React.ReactElement | React.ReactElement[]
+    children?: ReactNode[] | ReactElement | string | ReactElement[] | ReactNode | undefined
 }
 
 function clusterFields(fields: EditorField[]): EditorField[][] {
@@ -98,7 +100,7 @@ export default function ObjectEditor(props: ObjectEditorProps<any>) {
 
     useEffect(() => {
         if (props.objectEditorRef != null)
-            props.objectEditorRef.current = {save}
+            props.objectEditorRef.current = {save, getObject: () => object};
     });
 
     async function handleUpdateResponse<BaseQuery, TagTypes, ReducerPath>(result: {
@@ -148,14 +150,16 @@ export default function ObjectEditor(props: ObjectEditorProps<any>) {
         setObject({...object, ...changed});
     }
 
-    function renderForm() {
-        return <Form object={object} rows={rows} onChange={(changed) => onFormChanged(changed)} onSave={() => save()}/>
+    function renderForm(children: any) {
+        return <Form object={object} rows={rows} onChange={(changed) => onFormChanged(changed)} onSave={() => save()}>
+            {children}
+        </Form>
     }
 
     return <>
         <Card className={'pageWrapper'}>
             {isLoading || object == null && !isError ? <FormSkeleton rows={rows}/> : isError ?
-                <FetchError error={error}/> : renderForm()}
+                <FetchError error={error}/> : renderForm(props.children)}
         </Card>
         {props.additionalContent != null && !isLoading && object != null ? props.additionalContent(object, onFormChanged) : null}
     </>

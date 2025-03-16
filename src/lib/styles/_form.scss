@@ -44,6 +44,13 @@
       }
     }
   }
+
+  :global(.p-button) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .form-check-selection-row {
